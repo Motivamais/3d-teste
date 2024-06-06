@@ -8,6 +8,7 @@
         body {
             margin: 0;
             overflow: hidden;
+            background-color: #000; /* Define a cor de fundo preta */
         }
     </style>
 </head>
@@ -25,13 +26,23 @@
 
         // Carregador de textura
         const textureLoader = new THREE.TextureLoader();
-        const texture = textureLoader.load(forway.png); // Substitua pelo caminho da sua imagem
+        const texture = textureLoader.load('forway.png'); // Substitua pelo caminho da sua imagem
 
-        // Configuração do plano
-        const geometry = new THREE.PlaneGeometry(5, 5); // Ajuste o tamanho conforme necessário
-        const material = new THREE.MeshBasicMaterial({ map: texture });
-        const plane = new THREE.Mesh(geometry, material);
-        scene.add(plane);
+        // Verifica se a textura foi carregada corretamente
+        textureLoader.load('forway.png', 
+            function(texture) {
+                // Sucesso no carregamento
+                const geometry = new THREE.PlaneGeometry(5, 5); // Ajuste o tamanho conforme necessário
+                const material = new THREE.MeshBasicMaterial({ map: texture });
+                const plane = new THREE.Mesh(geometry, material);
+                scene.add(plane);
+            },
+            undefined,
+            function(err) {
+                // Erro no carregamento
+                console.error('Erro ao carregar a textura.', err);
+            }
+        );
 
         camera.position.z = 5;
 
