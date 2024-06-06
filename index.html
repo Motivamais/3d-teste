@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imagem 3D com Three.js e OrbitControls</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script>
+        // Configuração da cena
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Carregador de textura
+        const textureLoader = new THREE.TextureLoader();
+        const texture = textureLoader.load('caminho_da_sua_imagem.jpg'); // Substitua pelo caminho da sua imagem
+
+        // Configuração do plano
+        const geometry = new THREE.PlaneGeometry(5, 5); // Ajuste o tamanho conforme necessário
+        const material = new THREE.MeshBasicMaterial({ map: texture });
+        const plane = new THREE.Mesh(geometry, material);
+        scene.add(plane);
+
+        camera.position.z = 5;
+
+        // Configuração do OrbitControls
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true; // Habilita amortecimento (inércia)
+        controls.dampingFactor = 0.25;
+        controls.screenSpacePanning = false;
+        controls.maxPolarAngle = Math.PI / 2;
+
+        // Loop de animação
+        function animate() {
+            requestAnimationFrame(animate);
+
+            controls.update(); // Atualiza os controles
+
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+</html>
